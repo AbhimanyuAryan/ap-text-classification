@@ -24,11 +24,19 @@ the actual labels, which the model is learning effectively.
 
 #### Train loop
 
+<div align="center">
+
 ![train_loop](images/distilbert/wandb_graphs_train_loop.png)
+
+</div>
 
 #### Test loop
 
+<div align="center">
+
 ![trainer](images/distilbert/wandb_hf_trainer.png)
+
+</div>
 
 ### Results
 
@@ -66,19 +74,25 @@ The parameters of Mistral architecture are:
 
 
 **Sliding Window Attention (SWA)** The sliding window attention pattern employs a fixed-size window attention surrounding each token. This means that each position in a layer can attend to hidden states from the previous layer within a range of 4096 tokens behind it and up to itself.
-
+<div align="center">
+    
 ![swa](images/mistral/SWA.png)
 
+</div>
 
 **Rolling Buffer Cache**: Fixed cache size.
-
+<div align="center">
+    
 ![fixed_cache](images/mistral/Cache.png)
 
+</div>
 
 **Pre-fill and Chunking**: Devide the prompt into smaller pieces and then work with those pieces instead of the all prompt. 
-
+<div align="center">
+    
 ![prefillchunking](images/mistral/PreFillChunking.png)
 
+</div>
 ### Dataset
 
 IMDB movie review, 900 cases for training, 100 cases for evaluating and 2500 cases for testing. The data is balanced.
@@ -98,8 +112,11 @@ IMDB movie review, 900 cases for training, 100 cases for evaluating and 2500 cas
 
 </div>
 
-
+<div align="center">
+    
 ![loss_values](images/mistral/LossValues.png)
+
+</div>
 
 ### Results
 
