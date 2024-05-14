@@ -97,7 +97,7 @@ Where:
 
 # Experimenting Zero Shot Learning for the Gemma Model
 
-This directory contains four Jupyter notebooks used to explore the Gemma model's text classification capabilities.
+The Gemma directory contains four Jupyter notebooks used to explore the Gemma model's text classification capabilities.
 
 Initially, we aimed to fine-tune this model, just like we did with *Mistral* and *Distilbert*. Sadly, that was not feasible because every attempt ended up consuming all available resources in both Kaggle and Google Colab.
 
@@ -163,3 +163,11 @@ As for the results obtained with zero shot learning for this model we can say th
 iterations, which proves randomness, also the results were as expected a lot worse than the fine tuned examples which proves just how important it is to properly train these models.
 Still, it is interesting to analyse how good the model’s base form is at this task as we managed to get scores that were near or above 50% for 2500 cases.
 This is in our eyes quite remarkable and we assume that the reviews that were wrongly classified could be more complex ones with nuanced contexts
+
+The results obtained can be consulted on this table:
+
+| Execution | Accuracy | Recall | Precision |
+|-----------|----------|--------|-----------|
+| #1        | 0.49     | 0.49   | 0.48      |
+| #2        | 0.62     | 0.62   | 0.62      |
+| #3        | 0.60     | 0.60   | 0.71      |
