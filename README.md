@@ -1,13 +1,24 @@
+# Introduction
+
+
+Nowadays high-performing natural language models gained much relevance. In this project, we used three different pre-trained LLMs in order to classify opinions as positive or negative. The LLMs utilized in our study include:
+
+- Distilbert
+- Mistral
+- Gemma
+
+Our [GitHub repository](https://github.com/AbhimanyuAryan/llm-finetuning/) contains all the code and explanations for every decision we have made.
+
 # DistilBERT Fine-Tuning
 
 ### Architecture
 
 
-### Dataset
+### Fine Tuning
 
-IMDB 50k movie review. Train set is 70%, validation set is 10% and Test set is 20% of entire dataset split
+**Dataset**: IMDB 50k movie review. Train set is 70%, validation set is 10% and Test set is 20% of entire dataset split.
 
-### Training
+**Training**: Summarize important aspects of the code.
 
 1. Learning Rate: Graphs show a decreased learning rate, it is common in
 training as it shows model is converging by doing smaller updates to the
@@ -22,7 +33,7 @@ with each pass(epoch), it’s learning more about dataset
 5. Loss: The declining loss means model’s prediction are getting closer to
 the actual labels, which the model is learning effectively.
 
-#### Train loop
+**Train loop**:
 
 <div align="center">
 
@@ -30,7 +41,7 @@ the actual labels, which the model is learning effectively.
 
 </div>
 
-#### Test loop
+**Test loop**:
 
 <div align="center">
 
@@ -40,14 +51,19 @@ the actual labels, which the model is learning effectively.
 
 ### Results
 
-- Final accuracy with Training loop: 93.82%
-- Final accuracy with HuggingFace Trainer: 93.56%
 
------
+|       Method            | Accuracy |
+|:-----------------------:|:--------:|
+| Training loop           | 93.82%   |
+| HuggingFace Trainer     | 93.56%   |
 
 # Mistral Fine-Tuning
 
-All the code from Mistral is inside `mistral7b-instruct` folder. The notebook has all the documentation necessary.
+### Introduction
+
+Mistral is an [open-source model](https://github.com/mistralai/mistral-src) owned by the company [Mistral AI](https://mistral.ai/). It was published with the a [paper](https://arxiv.org/abs/2310.06825) and it is famous due to its performance and efficiency. Compared to the Llama model, Mistral surpasses the first version of Llama in all evaluated benchmarks. With the second version of Llama, Mistral is better in mathematics and code generation. 
+
+We build a notebook based on a [public notebook](https://www.kaggle.com/code/lucamassaron/fine-tune-mistral-v0-2-for-sentiment-analysis). In relation with Mistral version, we used the version [Mistral-7B-Instruct-v0.2](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2).
 
 ### Architecture
 
@@ -57,21 +73,20 @@ The parameters of Mistral architecture are:
 
 <div align="center">
 
-|  Parameter  |  Value  |
-|:-----------:|:-------:|
-|     dim     |   4096  |
-|   n_layers  |    32   |
-|  head_dim   |   128   |
-| hidden_dim  |  14336  |
-|  n_heads    |    32   |
-| n_kv_heads  |    8    |
-| window_size |   4096  |
-| context_len |   8192  |
-| vocab_size  |  32000  |
+| Parameter    | Value  | Explanation |
+|:------------:|:------:|-------------|
+| dim          | 4096   | Dimensionality of the model's embeddings and hidden states. This defines the size of the vectors used throughout the model.                                                    |
+| n_layers     | 32     | Number of transformer blocks in the model. |
+| head_dim     | 128    | Dimensionality of each attention head. |
+| hidden_dim   | 14336  | Dimensionality of the feed-forward layer within each transformer block. |
+| n_heads      | 32     | Number of attention heads in the multi-head attention mechanism.|
+| n_kv_heads   | 8      | Number of key-value heads used in attention. |
+| window_size  | 4096   | Size of the local context window used in models with attention mechanisms that restrict the range of attention to a local context. |
+| context_len  | 8192   | Maximum length of the input sequences. |
+| vocab_size   | 32000  | How many unique tokens (words, subwords, or characters) the model can represent. |
+
 
 </div>
-
-
 
 **Sliding Window Attention (SWA)** The sliding window attention pattern employs a fixed-size window attention surrounding each token. This means that each position in a layer can attend to hidden states from the previous layer within a range of 4096 tokens behind it and up to itself.
 <div align="center">
@@ -93,28 +108,36 @@ The parameters of Mistral architecture are:
 ![prefillchunking](images/mistral/PreFillChunking.png)
 
 </div>
-### Dataset
-
-IMDB movie review, 900 cases for training, 100 cases for evaluating and 2500 cases for testing. The data is balanced.
 
 
-### Training
+### Fine Tuning
+
+**Dataset**: IMDB movie review, 900 cases for training, 100 cases for evaluating and 2500 cases for testing. The data is balanced.
+
+**Training** For tune Mistral we have used the library Supervised Fine-tuning Trainer, as known as [SFTT](https://huggingface.co/docs/trl/sft_trainer) instead of the normal [Trainer](https://huggingface.co/docs/transformers/main_classes/trainer).
+
+- More appropriated to text classification problems.
+- Our dataset is not that large.
+- The training process is faster.
+- Uses less memory.
 
 <div align="center">
 
 
-|  Epoch  | Training Loss | Validation Loss |
-|:-------:|:-------------:|:---------------:|
-|    1    |    2.020200   |     2.116383    |
-|    2    |    1.978800   |     2.123799    |
-|    3    |    1.881900   |     2.155143    |
-|    4    |    1.826800   |     2.168781    |
+| Epoch | Training Loss | Validation Loss |
+|:-----:|:-------------:|:---------------:|
+|   1   |    2.019900   |    2.116099     |
+|   2   |    1.980300   |    2.124171     |
+|   3   |    1.883400   |    2.153847     |
+|   4   |    1.827500   |    2.167378     |
 
 </div>
 
 <div align="center">
     
-![loss_values](images/mistral/LossValues.png)
+![train_loss_values](images/mistral/TrainLoss.png)
+![eval_loss_values](images/mistral/EvalLoss.png)
+
 
 </div>
 
@@ -122,20 +145,19 @@ IMDB movie review, 900 cases for training, 100 cases for evaluating and 2500 cas
 
 <div align="center">
     
-|   Stage   |        Metric         |  Value  |
-|:---------:|:---------------------:|:-------:|
-|  Original |       Accuracy        |  63.0%  |
-|  Original | Accuracy for negative reviews |  98.0%  |
-|  Original | Accuracy for positive reviews |  28.0%  |
-|   Tuned   |       Accuracy        |  96.1%  |
-|   Tuned   | Accuracy for negative reviews |  97.6%  |
-|   Tuned   | Accuracy for positive reviews |  94.6%  |
+| Stage    | Metric                        | Value |
+|:--------:|:-----------------------------:|:-----:|
+| Original | Accuracy                      | 63.0% |
+| Original | Accuracy for negative reviews | 98.0% |
+| Original | Accuracy for positive reviews | 28.0% |
+| Tuned    | Accuracy                      | 96.0% |
+| Tuned    | Accuracy for negative reviews | 97.4% |
+| Tuned    | Accuracy for positive reviews | 94.6% |
+
 
 </div>
 
-----
-
-# Experimenting Zero Shot Learning for the Gemma Model
+# Gemma Zero Shot Learning
 
 The Gemma directory contains four Jupyter notebooks used to explore the Gemma model's text classification capabilities.
 
@@ -159,6 +181,10 @@ But this ends up becoming not much relevant because as long as the dataset conta
 
 To do
 
+### Zero Shot Learning
+
+Summarize the code here.
+
 ### Results
 
 As for the results obtained with zero shot learning for this model we can say that as mentioned they are not that consistent and a bit random, as they  do not remain the same over the
@@ -178,3 +204,14 @@ The results obtained can be consulted on this table:
 
 </div>
 
+# Conclusions
+
+Unsurprisingly, Mistral was the best in terms of performance. This outcome was anticipated, given Mistral's superior pre-training compared to Distilbert, and the absence of specific tuning for Gemma.
+
+Our journey has been truly fulfilling, marked by the exploration of diverse models and methodologies, each offering unique insights into the realm of natural language processing.
+
+---
+
+# References
+
+1. [Mistral 7B, Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed, 2023. arXiv eprint: 2310.06825, primary class: cs.CL.](https://arxiv.org/abs/2310.06825)
