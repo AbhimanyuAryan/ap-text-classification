@@ -51,11 +51,14 @@ the actual labels, which the model is learning effectively.
 
 ### Results
 
+<div align="center">
 
 |       Method            | Accuracy |
 |:-----------------------:|:--------:|
 | Training loop           | 93.82%   |
 | HuggingFace Trainer     | 93.56%   |
+
+</div>
 
 # Mistral Fine-Tuning
 
