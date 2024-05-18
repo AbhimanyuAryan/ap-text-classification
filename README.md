@@ -172,30 +172,47 @@ These attempts led to failure, as once again, we consumed all the resources.
 
 However, we still want to provide the code for all our attempts. We will not go into as much detail as we did for the other two models, since we can consider this to be an extra that improves the overall work.
 
+
+## Model Architecture
+
+The Gemma model is based on Transformers Architecture. It comes in two varients with either 2B or 7B parameters and they has the following values:
+
+| Parameter             | 2B   | 7B   |
+|-----------------------|------|------|
+| d_model               | 2048 | 3072 |
+| Layers      | 18   | 28   |
+| Feedforward hidden dims | 32768 | 49152 |
+| Num Heads       | 8    | 16   |
+| Num of KV heads    | 1    | 16   |
+| Head size             | 256  | 256  |
+| Vocab size       | 256128 | 256128 |
+
+
+These models also have a fair few enhancements such as:
+
+- **Multi-Query Attention**: The 7B model utilizes multi-head attention, whereas the 2B model employs multi-query attention with `num_kv_heads = 1`. Ablation studies indicate that multi-query attention performs effectively at smaller scales.
+- **RoPE Embeddings**: Instead of absolute positional embeddings, rotary positional embeddings are employed in each layer. Moreover, embeddings are shared across inputs and outputs to minimize model size.
+- **GeGLU Activations**: Conventional ReLU activation function is replaced with the GeGLU activation function, providing improved performance.
+- **RMSNorm**: Stabilize trainings, RMSNorm is applied to the input of each transformer sub-layer, including both the attention and feedforward layers.
+
+The parameters can be split into embedding and non-embedding in the following manner:
+
+| Model | Embedding Parameters | Non-embedding Parameters |
+|-------|-----------------------|--------------------------|
+| 2B    | 524,550,144           | 1,981,884,416            |
+| 7B    | 786,825,216           | 7,751,248,896            |
+
+These models inherit a large vocabulary from the Gemini framework, comprising 256,000 entries handling multiple languages, which results in larger embedding parameter counts compared to models limited to fewer languages.
+
+### Code Explanation
+
 We kept some code blocks that are not particularly relevant, such as some pip installs that ended up not being utilized in the final version. Yet, these would be necessary for the failed fine-tuning. We also kept under comments a function that can be used to clear resources on Google Colab.
 
 Three of our notebooks implement Zero Shot Learning. These notebooks contain the exact same content, but we created them to prove the randomness in zero-shot learning as results vary on each execution. Then we have a notebook that contains the same basic code with the code needed for One Shot and Few Shot classification added to it. We kept the output that showcases the error.
 
-The final not we consider important to make is that the following code is used to access the imdb dataset. We could have used the datasets package, to alude to it we kept the command to install this package on the notebooks.
-
-But this ends up becoming not much relevant because as long as the dataset contains a column with text to classify and a column with either 0 or 1 most of the notebook remains usable.
-
-### Architecture
-
-To do
-
-### Zero Shot Learning
-
-Summarize the code here.
+To sum up what we did, we basically load the dataset and utilizing the pipeline abstraction from transformers library we can simply run the model for zero shot classification for two labels. This generates two values one for each label, we then just pick the label with the highest value and compare to the reference values.
 
 ### Results
-
-As for the results obtained with zero shot learning for this model we can say that as mentioned they are not that consistent and a bit random, as they  do not remain the same over the
-iterations, which proves randomness, also the results were as expected a lot worse than the fine tuned examples which proves just how important it is to properly train these models.
-Still, it is interesting to analyse how good the model’s base form is at this task as we managed to get scores that were near or above 50% for 2500 cases.
-This is in our eyes quite remarkable and we assume that the reviews that were wrongly classified could be more complex ones with nuanced contexts
-
-The results obtained can be consulted on this table:
 
 <div align="center">
 
@@ -218,3 +235,5 @@ Our journey has been truly fulfilling, marked by the exploration of diverse mode
 # References
 
 1. [Mistral 7B, Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed, 2023. arXiv eprint: 2310.06825, primary class: cs.CL.](https://arxiv.org/abs/2310.06825)
+
+2. [Gemma Team, Thomas Mesnard, Cassidy Hardin, Robert Dadashi, Surya Bhupatiraju, Shreya Pathak, Laurent Sifre, Morgane Rivière, Mihir Sanjay Kale, Juliette Love, Pouya Tafti, Léonard Hussenot, Pier Giuseppe Sessa, Aakanksha Chowdhery, Adam Roberts, Aditya Barua, Alex Botev, Alex Castro-Ros, Ambrose Slone, Amélie Héliou, Andrea Tacchetti, Anna Bulanova, Antonia Paterson, Beth Tsai, Bobak Shahriari, Charline Le Lan, Christopher A. Choquette-Choo, Clément Crepy, Daniel Cer, Daphne Ippolito, David Reid, Elena Buchatskaya, Eric Ni, Eric Noland, Geng Yan, George Tucker, George-Christian Muraru, Grigory Rozhdestvenskiy, Henryk Michalewski, Ian Tenney, Ivan Grishchenko, Jacob Austin, James Keeling, Jane Labanowski, Jean-Baptiste Lespiau, Jeff Stanway, Jenny Brennan, Jeremy Chen, Johan Ferret, Justin Chiu, Justin Mao-Jones, Katherine Lee, Kathy Yu, Katie Millican, Lars Lowe Sjoesund, Lisa Lee, Lucas Dixon, Machel Reid, Maciej Mikuła, Mateo Wirth, Michael Sharman, Nikolai Chinaev, Nithum Thain, Olivier Bachem, Oscar Chang, Oscar Wahltinez, Paige Bailey, Paul Michel, Petko Yotov, Rahma Chaabouni, Ramona Comanescu, Reena Jana, Rohan Anil, Ross McIlroy, Ruibo Liu, Ryan Mullins, Samuel L. Smith, Sebastian Borgeaud, Sertan Girgin, Sholto Douglas, Shree Pandya, Siamak Shakeri, Soham De, Ted Klimenko, Tom Hennigan, Vlad Feinberg, Wojciech Stokowiec, Yu-hui Chen, Zafarali Ahmed, Zhitao Gong, Tris Warkentin, Ludovic Peran, Minh Giang, Clément Farabet, Oriol Vinyals, Jeff Dean, Koray Kavukcuoglu, Demis Hassabis, Zoubin Ghahramani, Douglas Eck, Joelle Barral, Fernando Pereira, Eli Collins, Armand Joulin, Noah Fiedel, Evan Senter, Alek Andreev, Kathleen Kenealy. (2024). Gemma: Open Models Based on Gemini Research and Technology. arXiv preprint arXiv:2403.08295.](https://arxiv.org/abs/2403.08295)
