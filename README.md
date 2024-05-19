@@ -11,8 +11,23 @@ Our [GitHub repository](https://github.com/AbhimanyuAryan/llm-finetuning/) conta
 
 # DistilBERT Fine-Tuning
 
+### Introduction
+
+Distilbert as mentioned in [paper](https://arxiv.org/abs/1910.01108) is smaller variant of Bert with 66 million parameters. It was found that it's possible to reduce size of BERT model by 40% while retraining 97% of its language understanding capabilities and being 60% faster.
+
 ### Architecture
 
+![Architecture](images/distilbert/The-DistilBERT-model-architecture-and-components.png)
+
+
+DistilBERT really a stripped down version of BERT. Instead of 12 transformer layers it contains 6 transformer layers. The overall structure:
+
+- Embedding Layer: Token Embeddings, Position Embeddings
+- Transformer Layers: Each transformer layer contains
+    - Multi-Head self-attention
+    - Feed-Forward Neural Network
+    - Layer Normalization
+    - Residual Connections
 
 ### Fine Tuning
 
@@ -115,7 +130,7 @@ The parameters of Mistral architecture are:
 
 ### Fine Tuning
 
-**Dataset**: IMDB movie review, 900 cases for training, 100 cases for evaluating and 2500 cases for testing. The data is balanced.
+**Dataset**: IMDB movie review, 300 cases for training, 100 cases for evaluating and 2500 cases for testing. The data is balanced.
 
 **Training** For tune Mistral we have used the library Supervised Fine-tuning Trainer, as known as [SFTT](https://huggingface.co/docs/trl/sft_trainer) instead of the normal [Trainer](https://huggingface.co/docs/transformers/main_classes/trainer).
 
@@ -237,3 +252,5 @@ Our journey has been truly fulfilling, marked by the exploration of diverse mode
 1. [Mistral 7B, Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed, 2023. arXiv eprint: 2310.06825, primary class: cs.CL.](https://arxiv.org/abs/2310.06825)
 
 2. [Gemma Team, Thomas Mesnard, Cassidy Hardin, Robert Dadashi, Surya Bhupatiraju, Shreya Pathak, Laurent Sifre, Morgane Rivière, Mihir Sanjay Kale, Juliette Love, Pouya Tafti, Léonard Hussenot, Pier Giuseppe Sessa, Aakanksha Chowdhery, Adam Roberts, Aditya Barua, Alex Botev, Alex Castro-Ros, Ambrose Slone, Amélie Héliou, Andrea Tacchetti, Anna Bulanova, Antonia Paterson, Beth Tsai, Bobak Shahriari, Charline Le Lan, Christopher A. Choquette-Choo, Clément Crepy, Daniel Cer, Daphne Ippolito, David Reid, Elena Buchatskaya, Eric Ni, Eric Noland, Geng Yan, George Tucker, George-Christian Muraru, Grigory Rozhdestvenskiy, Henryk Michalewski, Ian Tenney, Ivan Grishchenko, Jacob Austin, James Keeling, Jane Labanowski, Jean-Baptiste Lespiau, Jeff Stanway, Jenny Brennan, Jeremy Chen, Johan Ferret, Justin Chiu, Justin Mao-Jones, Katherine Lee, Kathy Yu, Katie Millican, Lars Lowe Sjoesund, Lisa Lee, Lucas Dixon, Machel Reid, Maciej Mikuła, Mateo Wirth, Michael Sharman, Nikolai Chinaev, Nithum Thain, Olivier Bachem, Oscar Chang, Oscar Wahltinez, Paige Bailey, Paul Michel, Petko Yotov, Rahma Chaabouni, Ramona Comanescu, Reena Jana, Rohan Anil, Ross McIlroy, Ruibo Liu, Ryan Mullins, Samuel L. Smith, Sebastian Borgeaud, Sertan Girgin, Sholto Douglas, Shree Pandya, Siamak Shakeri, Soham De, Ted Klimenko, Tom Hennigan, Vlad Feinberg, Wojciech Stokowiec, Yu-hui Chen, Zafarali Ahmed, Zhitao Gong, Tris Warkentin, Ludovic Peran, Minh Giang, Clément Farabet, Oriol Vinyals, Jeff Dean, Koray Kavukcuoglu, Demis Hassabis, Zoubin Ghahramani, Douglas Eck, Joelle Barral, Fernando Pereira, Eli Collins, Armand Joulin, Noah Fiedel, Evan Senter, Alek Andreev, Kathleen Kenealy. (2024). Gemma: Open Models Based on Gemini Research and Technology. arXiv preprint arXiv:2403.08295.](https://arxiv.org/abs/2403.08295)
+
+3. [Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. "DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter." arXiv preprint arXiv:1910.01108, 2020.](https://arxiv.org/abs/1910.01108)
