@@ -75,7 +75,53 @@ Self-attention layers ensure that h_CLS_1 and h_CLS_2 (the hidden states for the
 
 ![training_process](images/distilbert/bert-training-logistic-regression.png)
 
-**Training**: Summarize important aspects of the code.
+**Training Loop**
+
+### Custom Training Loop Parameters
+
+| Parameter / Step                            | Value / Description                                                           |
+|---------------------------------------------|-------------------------------------------------------------------------------|
+| `model`                                     | `DistilBertForSequenceClassification` from 'distilbert-base-uncased'          |
+| `optimizer`                                 | `AdamW` with learning rate `5e-5` and weight decay `0.01`                     |
+| `scheduler`                                 | Linear schedule with warmup, `500` warmup steps                               |
+| `num_training_steps`                        | `len(train_loader) * NUM_EPOCHS`                                              |
+| `num_warmup_steps`                          | `500`                                                                         |
+| `batch_size`                                | Defined by `train_loader` and `valid_loader`                                  |
+| `num_epochs`                                | `NUM_EPOCHS`                                                                  |
+| `device`                                    | `DEVICE` (e.g., 'cuda' or 'cpu')                                              |
+| `compute_accuracy` function                 | Computes accuracy of the model                                                |
+| `input_ids`, `attention_mask`, `labels`     | Inputs to the model for each batch                                            |
+| `outputs`                                   | Model outputs containing `loss` and `logits`                                  |
+| `loss.backward()`                           | Computes gradients                                                            |
+| `optim.step()`                              | Updates model parameters                                                      |
+| `scheduler.step()`                          | Updates learning rate schedule                                                |
+| `model.eval()`                              | Switches model to evaluation mode                                             |
+| `torch.no_grad()`                           | Disables gradient calculation for evaluation                                  |
+| `torch.set_grad_enabled(False)`             | Disables gradient calculation for evaluation within a context manager         |
+| `start_time` and `time.time()`              | Measures elapsed time for training                                            |
+| Logging                                     | Prints progress every 250 batches                                             |
+
+
+**HF Trainer**
+
+### Hugging Face Trainer Parameters
+
+| Parameter                     | Value                           | Description                                                     |
+|-------------------------------|---------------------------------|-----------------------------------------------------------------|
+| `output_dir`                  | `my_awesome_model`              | Directory to save the model and checkpoints.                    |
+| `learning_rate`               | `2e-5`                          | Learning rate for the training.                                 |
+| `per_device_train_batch_size` | `16`                            | Batch size per device during training.                          |
+| `per_device_eval_batch_size`  | `16`                            | Batch size per device during evaluation.                        |
+| `num_train_epochs`            | `2`                             | Number of training epochs.                                      |
+| `weight_decay`                | `0.01`                          | Weight decay to apply (if any).                                 |
+| `evaluation_strategy`         | `epoch`                         | Evaluation strategy to use.                                     |
+| `save_strategy`               | `epoch`                         | Save strategy to use.                                           |
+| `load_best_model_at_end`      | `True`                          | Whether to load the best model at the end of training.          |
+| `push_to_hub`                 | `True`                          | Whether to push the model to the Hugging Face Hub.              |
+
+
+
+## Training: Summarize important aspects of the code.
 
 1. Learning Rate: Graphs show a decreased learning rate, it is common in
 training as it shows model is converging by doing smaller updates to the
