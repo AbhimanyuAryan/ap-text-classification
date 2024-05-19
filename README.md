@@ -33,6 +33,47 @@ DistilBERT really a stripped down version of BERT. Instead of 12 transformer lay
 
 **Dataset**: IMDB 50k movie review. Train set is 70%, validation set is 10% and Test set is 20% of entire dataset split.
 
+#### Fine Tuning Process
+
+![embedding](images/distilbert/bert-distilbert-tutorial-sentence-embedding.png)
+
+The input text is tokenized into `input_ids` and `attention_mask` and passed through the DistilBERT model to get the `last_hidden_states`
+
+![embedding](images/distilbert/bert-output-tensor-selection.png)
+
+**Feature Extraction**
+
+```python
+with torch.no_grad():
+    last_hidden_states = model(input_ids, attention_mask=attention_mask)
+
+features = last_hidden_states[0][:,0,:].numpy()
+```
+
+```
+Tokenized input:
+[
+    [CLS] I love this movie [SEP],
+    [CLS] This film was terrible [SEP]
+]
+
+last_hidden_states:
+[
+    [h_CLS_1, h_I, h_love, h_this, h_movie, h_SEP_1],
+    [h_CLS_2, h_This, h_film, h_was, h_terrible, h_SEP_2]
+]
+
+
+Selected `[CLS]` token hidden states:
+[
+    h_CLS_1,  # Contains contextual information from "I love this movie."
+    h_CLS_2   # Contains contextual information from "This film was terrible."
+]
+```
+
+Self-attention layers ensure that h_CLS_1 and h_CLS_2 (the hidden states for the [CLS] token) contain information from all other tokens in their respective sentences.
+
+
 **Training**: Summarize important aspects of the code.
 
 1. Learning Rate: Graphs show a decreased learning rate, it is common in
