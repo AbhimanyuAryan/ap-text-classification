@@ -33,7 +33,7 @@ DistilBERT really a stripped down version of BERT. Instead of 12 transformer lay
 
 **Dataset**: IMDB 50k movie review. Train set is 70%, validation set is 10% and Test set is 20% of entire dataset split.
 
-#### Fine Tuning Process
+#### Fine Tuning Scikit Version
 
 ![embedding](images/distilbert/bert-distilbert-tutorial-sentence-embedding.png)
 
@@ -73,6 +73,7 @@ Selected `[CLS]` token hidden states:
 
 Self-attention layers ensure that h_CLS_1 and h_CLS_2 (the hidden states for the [CLS] token) contain information from all other tokens in their respective sentences.
 
+![training_process](images/distilbert/bert-training-logistic-regression.png)
 
 **Training**: Summarize important aspects of the code.
 
