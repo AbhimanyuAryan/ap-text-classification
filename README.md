@@ -334,9 +334,7 @@ These are some of the results we obtained after running our notebooks. The first
 
 # Conclusions
 
-Unsurprisingly, Mistral was the best in terms of performance. This outcome was anticipated, given Mistral's superior pre-training compared to Distilbert, and the absence of specific tuning for Gemma.
-
-Our journey has been truly fulfilling, marked by the exploration of diverse models and methodologies, each offering unique insights into the realm of natural language processing.
+Unsurprisingly, Mistral was the best in terms of performance. This outcome was anticipated, given Mistral incorporates advanced attention mechanisms, such as Grouped-Query Attention(GQA) and Sliding Window Attention(SWA). GQA allows for faster inference times compared to standard full attention, while SWA enables handling longer text sequences efficiently12. These attention mechanisms contribute to better understanding and representation of context in the input text, leading to improved accuracy.
 
 ---
 
