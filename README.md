@@ -263,13 +263,13 @@ The parameters of Mistral architecture are:
 
 </div>
 
-# Gemma Zero Shot Learning
+# Gemma Zero-Shot Learning
 
 The Gemma directory contains four Jupyter notebooks used to explore the Gemma model's text classification capabilities.
 
 Initially, we aimed to fine-tune this model, just like we did with *Mistral* and *Distilbert*. Sadly, that was not feasible because every attempt ended up consuming all available resources in both Kaggle and Google Colab.
 
-So, we focused on implementing Zero Shot Learning to test the model's performance in this task. We successfully managed to implement this type of classification. After doing so, we attempted to implement both One Shot classification and Few Shot classification.
+So, we focused on implementing Zero-Shot Learning to test the model's performance in this task. We successfully managed to implement this type of classification. After doing so, we attempted to implement both One-Shot classification and Few-Shot classification.
 
 These attempts led to failure, as once again, we consumed all the resources.
 
@@ -311,11 +311,13 @@ These models inherit a large vocabulary from the Gemini framework, comprising 25
 
 We kept some code blocks that are not particularly relevant, such as some pip installs that ended up not being utilized in the final version. Yet, these would be necessary for the failed fine-tuning. We also kept under comments a function that can be used to clear resources on Google Colab.
 
-Three of our notebooks implement Zero Shot Learning. These notebooks contain the exact same content, but we created them to prove the randomness in zero-shot learning as results vary on each execution. Then we have a notebook that contains the same basic code with the code needed for One Shot and Few Shot classification added to it. We kept the output that showcases the error.
+Three of our notebooks implement Zero-Shot Learning. These notebooks contain the exact same content, but we created them to prove the randomness in zero-shot learning as results vary on each execution. Then we have a notebook that contains the same basic code with the code needed for One Shot and Few Shot classification added to it. We kept the output that showcases the error.
 
 To sum up what we did, we basically load the dataset and utilizing the pipeline abstraction from transformers library we can simply run the model for zero shot classification for two labels. This generates two values one for each label, we then just pick the label with the highest value and compare to the reference values.
 
 ### Results
+
+These are some of the results we obtained after running our notebooks. The first three executions can be consulted on the notebooks present in the repository, the last two come from other executions we did not include in the repository.
 
 <div align="center">
 
@@ -324,6 +326,9 @@ To sum up what we did, we basically load the dataset and utilizing the pipeline 
 |    #1     |   0.49   |  0.49  |    0.48   |
 |    #2     |   0.62   |  0.62  |    0.62   |
 |    #3     |   0.60   |  0.60  |    0.71   |
+|    #4     |   0.44   |  0.44  |    0.44   |
+|    #5     |   0.64   |  0.64  |    0.70   |
+|  Average  | 0.56     |  0.56  |    0.59   |
 
 </div>
 
